@@ -1,17 +1,9 @@
-import { Geist, Geist_Mono } from "next/font/google"
+"use client"
+import { GeistSans } from "geist/font/sans"
+import { GeistMono } from "geist/font/mono"
 import { ClerkProvider } from "@clerk/nextjs"
 import "./globals.css"
 import { Toaster } from "sonner"
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-})
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-})
 
 export default function RootLayout({
   children,
@@ -20,10 +12,8 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+      <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+        <body className="antialiased">
           <Toaster
             position="bottom-center"
             theme="light"
