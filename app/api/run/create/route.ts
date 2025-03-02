@@ -3,7 +3,7 @@ import OpenAI from "openai"
 
 export async function POST(req: NextRequest) {
   const { threadId, assistantId } = await req.json()
-  console.log("from user ", { threadId, assistantId })
+  console.log("from user -- create run", { threadId, assistantId })
   if (!threadId || !assistantId) {
     return NextResponse.json(
       { message: "Invalid request", success: false },

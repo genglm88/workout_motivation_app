@@ -43,7 +43,7 @@ const ChatPage = () => {
   const areaRef = useRef<HTMLInputElement>(null)
   // Add this ref at the top of your component
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const [assistantId, setAssistantId] = useState<string | null>(null)
+  //const [assistantId, setAssistantId] = useState<string | null>(null)
 
   const fetchMessages = async ({ threadId }: { threadId: string | null }) => {
     if (!threadId) return
@@ -109,10 +109,10 @@ const ChatPage = () => {
   const startRun = async ({ threadId }: { threadId: string }) => {
     const fetchedId = await getAssistantId()
     if (!fetchedId) return
-    setAssistantId(fetchedId)
+    //setAssistantId(fetchedId)
     try {
       const {
-        data: { success, run, error },
+        data: { success, run },
       } = await axios.post<{
         success: boolean
         error?: string

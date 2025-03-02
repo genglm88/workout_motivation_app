@@ -4,19 +4,14 @@ import React, { useEffect, useRef, useState } from "react"
 import axios from "axios"
 
 import { Input } from "@/components/ui/input"
-import {
-  getAssistantId,
-  getUserThread,
-  sendUserMessage,
-} from "@/components/action"
-import { useRouter } from "next/navigation"
+import { getUserThread } from "@/components/action"
+//import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
 import { UserThread } from "@prisma/client"
 import Spinner from "@/components/Spinner"
-import { Run } from "openai/resources/beta/threads/runs/runs.mjs"
+
 import SubmitButton from "@/components/SubmitButton"
-const PULLING_FREQUENCY_MS = 1000
 
 interface ThreadMessage {
   id: string
@@ -39,11 +34,10 @@ const ChatPage = () => {
   const [messages, setMessages] = useState<ThreadMessage[]>([])
 
   const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
+  //const router = useRouter()
   const areaRef = useRef<HTMLInputElement>(null)
   // Add this ref at the top of your component
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const [assistantId, setAssistantId] = useState<string | null>(null)
 
   const fetchMessages = async ({ threadId }: { threadId: string | null }) => {
     if (!threadId) return
@@ -111,83 +105,6 @@ const ChatPage = () => {
     // Scroll to bottom when messages change
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
-
-  const startRun = async ({ threadId }: { threadId: string }) => {
-    const fetchedId = await getAssistantId()
-    if (!fetchedId) return
-    setAssistantId(fetchedId)
-    try {
-      const {
-        data: { success, run },
-      } = await axios.post<{
-        success: boolean
-        error?: string
-        run?: Run
-      }>("/api/run/create", {
-        threadId,
-        assistantId: fetchedId,
-      })
-
-      if (!success || !run) {
-        toast.error("Failed to run")
-        return ""
-      }
-      return run.id
-    } catch (error) {
-      console.error("Error initializing run:", error)
-      toast.error("Failed to run chat")
-      return ""
-    }
-  }
-
-  const retrieveRun = async ({
-    threadId,
-    runId,
-  }: {
-    threadId: string
-    runId: string
-  }) => {
-    try {
-      const {
-        data: { success, retrieveRun, error },
-      } = await axios.post<{
-        success: boolean
-        error?: string
-        retrieveRun?: Run
-      }>("/api/run/retrieve", {
-        threadId,
-        runId,
-      })
-
-      if (!success || !retrieveRun) {
-        console.error(error)
-        toast.error("Failed to  retrieve the run")
-        return ""
-      }
-      return retrieveRun.status.toString()
-    } catch (error) {
-      console.error("Error initializing run:", error)
-      toast.error("Failed to run chat")
-      return ""
-    }
-  }
-
-  const pullingRun = async ({
-    threadId,
-    runId,
-  }: {
-    threadId: string
-    runId: string
-  }) => {
-    const intervalId = setInterval(async () => {
-      const runStatusString = await retrieveRun({ threadId, runId })
-      //console.log("runStatusMsg ", runStatusString)
-      if (runStatusString === "completed") {
-        fetchMessages({ threadId })
-        clearInterval(intervalId)
-      }
-    }, PULLING_FREQUENCY_MS)
-  }
 
   return (
     <div className="w-screen h-screen  bg-indigo-950 text-indigo-50/80">

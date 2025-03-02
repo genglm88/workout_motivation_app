@@ -88,7 +88,7 @@ export async function POST(request: Request) {
   // return map}, {} as UserThreadMap)
 
   //add messages to threads
-  const threadPromises: Promise<any>[] = []
+  const threadPromises: Promise<unknown>[] = []
   try {
     challengePreferences.forEach((cp) => {
       //Find the respective user

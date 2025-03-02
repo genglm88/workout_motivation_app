@@ -1,7 +1,6 @@
 "use client"
 
 import { fetchPresets, postAssistantId, savePresets } from "@/components/action"
-import { Button } from "@/components/ui/button"
 
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
