@@ -138,7 +138,7 @@ export default function FloatingBubblesBackground({
               key={i}
               style={{ display: "inline-block", marginRight: "0.5rem" }}
             >
-              {word}
+              <Link href="/chat">{word}</Link>
             </span>
           ))}
         </h1>

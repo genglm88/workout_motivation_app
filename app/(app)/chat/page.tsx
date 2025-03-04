@@ -196,9 +196,9 @@ const ChatPage = () => {
               <div className="text-center text-indigo-400">No messages yet</div>
             ) : (
               <>
-                {messages.map((msg) => (
+                {/* {messages.map((msg) => (
                   <pre key={msg.id}>{JSON.stringify(msg, null, 2)}</pre>
-                ))}
+                ))} */}
                 {messages.map((msg) => (
                   <div
                     className={
